@@ -1,35 +1,30 @@
 package main;
 
-import model.Man;
+import input.InputHandler;
 
 import javax.swing.*;
 import java.awt.*;
+
 
 public class GamePanel extends JPanel implements Runnable {
 
     final int FPS = 60;
 
-    // SCREEN SETTINGS
-    final int tileSize = 32; // 32px x 32px
-
-    final int tileScreenWidth = 40;
-    final int tileScreenHeight = 30;
-
-    final int screenWidth = tileSize * tileScreenWidth;
-    final int screenHeight = tileSize * tileScreenHeight;
-
     Thread gameLoop;
+    GameController gameController;
 
-    Man man;
+    InputHandler inputHandler;
 
     public GamePanel() {
-        this.setPreferredSize(new Dimension(screenWidth, screenHeight));
+        inputHandler = new InputHandler();
+        gameController = new GameController(0, inputHandler);
+
+        this.setPreferredSize(new Dimension(gameController.game.screenWidth, gameController.game.screenHeight));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
 
-        man = new Man(100, 100, tileSize, tileSize);
-
-        this.addMouseListener(man.mouseHandler);
+        this.addKeyListener(inputHandler);
+        this.addMouseListener(inputHandler);
         this.setFocusable(true);
     }
 
@@ -79,13 +74,22 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-        man.update();
+        gameController.update();
+
+        resetInputStates();
+    }
+
+    private void resetInputStates() {
+        inputHandler.clickPoint = null;
+
+        inputHandler.shiftState = false;
+        inputHandler.oPressed = false;
     }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        man.draw(g2);
+        gameController.draw(g2);
     }
 }

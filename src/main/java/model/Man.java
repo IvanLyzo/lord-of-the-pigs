@@ -1,49 +1,46 @@
 package model;
 
-import input.MouseHandler;
+import input.InputHandler;
 import model.base.Animal;
 
 import java.awt.*;
 
 public class Man extends Animal {
 
-    public MouseHandler mouseHandler;
-    public boolean activated;
+    // character stats (here for now) TODO
+    public String name;
+    public int age;
 
-    public Man(int xPos, int yPos, int width, int height) {
+    public InputHandler inputHandler;
+
+    public boolean activated;
+    public Point tgt;
+
+    public Man(int xPos, int yPos, int width, int height, InputHandler inputHandler) {
         super(xPos, yPos, width, height);
 
-        mouseHandler = new MouseHandler();
+        this.inputHandler = inputHandler;
 
-        speed = 4;
+        speed = 2;
     }
 
     @Override
     public void update() {
+
         super.update();
 
-        if (mouseHandler.newClick) {
-            if (bounds.inBounds(mouseHandler.clickPoint)) {
-                if (activated) {
-                    activated = false;
-                    drawColor = Color.WHITE;
-                } else {
-                    activated = true;
-                    drawColor = Color.BLUE;
-                }
-            }
+        if (activated) {
+            move();
         }
-
-        move();
     }
 
     public void move() {
-        if (!activated) {
-            return;
+        if (!bounds.inBounds(inputHandler.clickPoint) && inputHandler.clickPoint != null) {
+            tgt = inputHandler.clickPoint;
         }
 
-        if (mouseHandler.clickPoint != null) {
-            super.move(mouseHandler.clickPoint);
+        if (tgt != null) {
+            super.move(tgt);
         }
     }
 }

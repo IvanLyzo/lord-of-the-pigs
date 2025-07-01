@@ -17,6 +17,10 @@ public class Bound {
     }
 
     public boolean inBounds(Point point) {
+        if (point == null) {
+            return false;
+        }
+
         return point.x > xPos && point.x < xPos + width
                 && point.y > yPos && point.y < yPos + height;
     }
