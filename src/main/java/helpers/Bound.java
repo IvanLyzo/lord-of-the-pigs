@@ -1,7 +1,5 @@
 package helpers;
 
-import model.base.Entity;
-
 import java.awt.*;
 
 public class Bound {

@@ -1,6 +1,7 @@
 package main;
 
 import helpers.Bound;
+import helpers.Renderer;
 import helpers.Tile;
 import input.InputHandler;
 import model.Man;
@@ -16,8 +17,12 @@ public class GameController {
 
     public GameController(int seed, InputHandler inputHandler) {
         game = new Game(seed, inputHandler);
+
+        Renderer renderer = new Renderer(game);
+        gameRenderer = new GameRenderer(game, renderer);
+
         this.inputHandler = inputHandler;
-        gameRenderer = new GameRenderer(game);
+        inputHandler.game = game;
 
         generateWorld();
     }
@@ -34,6 +39,9 @@ public class GameController {
     }
 
     public void update() {
+        game.camera.xPos += inputHandler.cameraDir.x * 4;
+        game.camera.yPos += inputHandler.cameraDir.y * 4;
+
         for (Man boy : game.boys) {
             if (boy.bounds.inBounds(inputHandler.clickPoint) == Bound.CollisionCheckResponse.TRUE) {
                 inputHandler.clickFlag = InputHandler.ClickFlag.ENTITY; // flag check (possibly make more evident)
@@ -66,10 +74,10 @@ public class GameController {
     }
 
     public void draw(Graphics2D g2) {
-        gameRenderer.drawMap(g2, game.map);
+        gameRenderer.drawMap(g2);
 
         for (Man boy : game.boys) {
-            boy.draw(g2);
+            boy.draw(g2, game);
         }
 
         // draw UI after everything

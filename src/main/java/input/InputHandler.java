@@ -1,5 +1,7 @@
 package input;
 
+import main.Game;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -10,12 +12,14 @@ import java.util.List;
 
 public class InputHandler implements KeyListener, MouseListener {
 
+    public Game game;
+
     public List<Integer> keysPressed = new ArrayList<>();
 
     public Point clickPoint;
     public ClickFlag clickFlag;
 
-    public Point cameraDir;
+    public Point cameraDir = new Point(0, 0);
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -49,7 +53,7 @@ public class InputHandler implements KeyListener, MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        clickPoint = new Point(e.getX(), e.getY());
+        clickPoint = new Point(e.getX() + game.camera.xPos, e.getY() + game.camera.yPos);
         clickFlag = ClickFlag.EMPTY;
     }
 

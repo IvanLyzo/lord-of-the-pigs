@@ -35,6 +35,8 @@ public class Game {
 
     public List<Man> boys;
 
+    public Bound camera;
+
     public boolean pauseMode = false;
 
     public Game(int seed, InputHandler inputHandler) {
@@ -44,5 +46,7 @@ public class Game {
         boys = new ArrayList<>();
         optionsWindow = new OptionsWindow(new Bound(300, 300, screenWidth - 600, screenHeight - 600), KeyEvent.VK_O, inputHandler);
         detailsWindow = new DetailsWindow(new Bound(100, 500, screenWidth - 200, screenHeight - 600), KeyEvent.VK_E, inputHandler);
+
+        camera = new Bound(0, 0, screenWidth, screenHeight);
     }
 }

@@ -1,6 +1,7 @@
 package model.base;
 
 import helpers.Bound;
+import main.Game;
 
 import java.awt.*;
 
@@ -18,8 +19,13 @@ public class Entity {
 
     }
 
-    public void draw(Graphics2D g) {
+    public void draw(Graphics2D g, Game game) {
         g.setColor(drawColor);
-        g.fillRect(bounds.xPos, bounds.yPos, bounds.width, bounds.height);
+
+        // get screen coords
+        int screenX = bounds.xPos - game.camera.xPos;
+        int screenY = bounds.yPos - game.camera.yPos;
+
+        g.fillRect(screenX, screenY, bounds.width, bounds.height);
     }
 }
