@@ -16,6 +16,11 @@ public class Animal extends Entity {
         super.update();
     }
 
+    @Override
+    public void interact() {
+        super.interact();
+    }
+
     public void move(Point target) {
         int centerX = bounds.xPos + bounds.width / 2;
         int centerY = bounds.yPos + bounds.height / 2;

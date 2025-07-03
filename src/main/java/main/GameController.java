@@ -18,8 +18,7 @@ public class GameController {
     public GameController(int seed, InputHandler inputHandler) {
         game = new Game(seed, inputHandler);
 
-        Renderer renderer = new Renderer(game);
-        gameRenderer = new GameRenderer(game, renderer);
+        gameRenderer = new GameRenderer(game);
 
         this.inputHandler = inputHandler;
         inputHandler.game = game;
@@ -39,31 +38,34 @@ public class GameController {
     }
 
     public void update() {
+
+        // probably should have a camera class TODO
         game.camera.xPos += inputHandler.cameraDir.x * 4;
         game.camera.yPos += inputHandler.cameraDir.y * 4;
+
+        // first check for interactions (replace with event system if exists) TODO
 
         for (Man boy : game.boys) {
             if (boy.bounds.inBounds(inputHandler.clickPoint) == Bound.CollisionCheckResponse.TRUE) {
                 inputHandler.clickFlag = InputHandler.ClickFlag.ENTITY; // flag check (possibly make more evident)
 
-                if (boy.activated) {
-                    boy.activated = false;
-                    boy.drawColor = Color.WHITE;
+                game.detailsWindow.activeBoy = boy.activated ? null : boy;
 
-                    game.detailsWindow.activeBoy = null;
-                } else {
-                    boy.activated = true;
-                    boy.drawColor = Color.BLUE;
-
-                    game.detailsWindow.activeBoy = boy;
-                }
+                boy.interact();
             }
         }
 
-        if ((game.optionsWindow.bounds.inBounds(inputHandler.clickPoint) == Bound.CollisionCheckResponse.TRUE && game.optionsWindow.active) ||
-                (game.detailsWindow.bounds.inBounds(inputHandler.clickPoint) == Bound.CollisionCheckResponse.TRUE && game.detailsWindow.active)) {
+        if (game.optionsWindow.bounds.inBounds(inputHandler.clickPoint) == Bound.CollisionCheckResponse.TRUE && game.optionsWindow.active) {
             inputHandler.clickFlag = InputHandler.ClickFlag.UI;
+            game.optionsWindow.interact();
         }
+
+        if (game.detailsWindow.bounds.inBounds(inputHandler.clickPoint) == Bound.CollisionCheckResponse.TRUE && game.detailsWindow.active) {
+            inputHandler.clickFlag = InputHandler.ClickFlag.UI;
+            game.detailsWindow.interact();
+        }
+
+        // now update behaviour
 
         for (Man boy : game.boys) {
             boy.update();

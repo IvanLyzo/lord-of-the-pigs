@@ -17,6 +17,7 @@ public class InputHandler implements KeyListener, MouseListener {
     public List<Integer> keysPressed = new ArrayList<>();
 
     public Point clickPoint;
+    public ClickType clickType;
     public ClickFlag clickFlag;
 
     public Point cameraDir = new Point(0, 0);
@@ -53,6 +54,13 @@ public class InputHandler implements KeyListener, MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        if (e.getButton() == MouseEvent.BUTTON1) {
+            clickType = ClickType.PRIMARY;
+        }
+        if (e.getButton() == MouseEvent.BUTTON2) {
+            clickType = ClickType.SECONDARY;
+        }
+
         clickPoint = new Point(e.getX() + game.camera.xPos, e.getY() + game.camera.yPos);
         clickFlag = ClickFlag.EMPTY;
     }
@@ -82,5 +90,10 @@ public class InputHandler implements KeyListener, MouseListener {
         ENTITY,
         UI,
         INVALID
+    }
+
+    public enum ClickType {
+        PRIMARY,
+        SECONDARY
     }
 }

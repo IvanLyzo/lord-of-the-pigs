@@ -1,6 +1,5 @@
 package model;
 
-import helpers.Bound;
 import input.InputHandler;
 import model.base.Animal;
 
@@ -23,6 +22,8 @@ public class Man extends Animal {
         this.inputHandler = inputHandler;
 
         speed = 2;
+
+        drawColor = Color.WHITE;
     }
 
     @Override
@@ -31,6 +32,19 @@ public class Man extends Animal {
 
         if (activated) {
             move();
+        }
+    }
+
+    @Override
+    public void interact() {
+        super.interact();
+
+        if (activated) {
+            activated = false;
+            drawColor = Color.WHITE;
+        } else {
+            activated = true;
+            drawColor = Color.BLUE;
         }
     }
 

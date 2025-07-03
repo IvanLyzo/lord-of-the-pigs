@@ -1,16 +1,17 @@
 package ui;
 
 import helpers.Bound;
+import helpers.Renderer;
 import input.InputHandler;
+import model.base.Entity;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Window {
+public class Window extends Entity {
 
     public int keyCode;
-    public Bound bounds;
 
     public final InputHandler inputHandler;
 
@@ -20,21 +21,27 @@ public class Window {
     public boolean active = false;
 
     public Window(Bound bounds, int keyCode, InputHandler inputHandler) {
-        this.bounds = bounds;
+        super(bounds);
+
         this.keyCode = keyCode;
         this.inputHandler = inputHandler;
 
         textboxes = new ArrayList<>();
     }
 
+    @Override
     public void update() {
         // check default behaviour (exited, minimized window?)
+        super.update();
+    }
+
+    @Override
+    public void interact() {
+        super.interact();
     }
 
     public void draw(Graphics2D g) {
         // draw base window (borders, exit and minimize windows?)
-
-        g.setColor(Color.BLACK);
-        g.fillRect(bounds.xPos, bounds.yPos, bounds.width, bounds.height);
+        Renderer.drawWindow(g, bounds);
     }
 }

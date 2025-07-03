@@ -6,14 +6,13 @@ import helpers.Tile;
 
 import java.awt.*;
 
+// maybe have a Map class and remove gameRenderer to have individual classes draw themselves as with update (away from MVC) TODO
 public class GameRenderer {
 
     private final Game game;
-    private final Renderer renderer;
 
-    public GameRenderer(Game game, Renderer renderer) {
+    public GameRenderer(Game game) {
         this.game = game;
-        this.renderer = renderer;
     }
 
     public void drawMap(Graphics2D g) {
@@ -26,7 +25,7 @@ public class GameRenderer {
         for (int x = firstX; x < lastX; x++) {
             for (int y = firstY; y < lastY; y++) {
                 Bound tile = new Bound(x * Tile.TILESIZE, y * Tile.TILESIZE, Tile.TILESIZE, Tile.TILESIZE);
-                renderer.draw(g, tile, Color.GREEN);
+                Renderer.drawEntity(g, game, tile, Color.GREEN);
             }
         }
     }
