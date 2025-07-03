@@ -7,12 +7,10 @@ import model.base.GameObject;
 
 import java.awt.*;
 
-public class Chest extends GameObject {
+public class Tree extends GameObject {
 
-    public Chest(Bound bounds) {
+    public Tree(Bound bounds) {
         super(bounds);
-
-        drawColor = Color.ORANGE;
     }
 
     @Override

@@ -2,21 +2,18 @@ package model.base;
 
 import helpers.Bound;
 import helpers.Renderer;
+import input.InputHandler;
 import main.Game;
 
 import java.awt.*;
 
-public class Entity {
+public class GameObject {
 
     public Bound bounds;
 
     public Color drawColor;
 
-    public Entity(int xPos, int yPos, int width, int height) {
-        bounds = new Bound(xPos, yPos, width, height);
-    }
-
-    public Entity(Bound bounds) {
+    public GameObject(Bound bounds) {
         this.bounds = bounds;
     }
 
@@ -24,7 +21,7 @@ public class Entity {
 
     }
 
-    public void interact() {
+    public void interact(InputHandler.ClickType clickType) {
 
     }
 

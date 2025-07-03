@@ -1,5 +1,6 @@
 package model;
 
+import helpers.Bound;
 import input.InputHandler;
 import model.base.Animal;
 
@@ -16,8 +17,8 @@ public class Man extends Animal {
     public boolean activated;
     public Point tgt;
 
-    public Man(int xPos, int yPos, int width, int height, InputHandler inputHandler) {
-        super(xPos, yPos, width, height);
+    public Man(Bound bounds, InputHandler inputHandler) {
+        super(bounds);
 
         this.inputHandler = inputHandler;
 
@@ -36,8 +37,8 @@ public class Man extends Animal {
     }
 
     @Override
-    public void interact() {
-        super.interact();
+    public void interact(InputHandler.ClickType clickType) {
+        super.interact(clickType);
 
         if (activated) {
             activated = false;

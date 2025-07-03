@@ -1,14 +1,17 @@
 package model.base;
 
+import helpers.Bound;
+import input.InputHandler;
+
 import java.awt.*;
 
-public class Animal extends Entity {
+public class Animal extends GameObject {
 
     public int health;
     public int speed; // TODO: figure out how to init these
 
-    public Animal(int xPos, int yPos, int width, int height) {
-        super(xPos, yPos, width, height);
+    public Animal(Bound bounds) {
+        super(bounds);
     }
 
     @Override
@@ -17,8 +20,8 @@ public class Animal extends Entity {
     }
 
     @Override
-    public void interact() {
-        super.interact();
+    public void interact(InputHandler.ClickType clickType) {
+        super.interact(clickType);
     }
 
     public void move(Point target) {

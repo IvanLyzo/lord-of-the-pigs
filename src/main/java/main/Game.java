@@ -13,12 +13,6 @@ import java.util.List;
 
 public class Game {
 
-    // WORLD SETTINGS
-    private final int seed;
-
-    public final int mapTileWidth = 100;
-    public final int mapTileHeight = 100;
-
     // SCREEN SETTINGS
     public final int tileScreenWidth = 40;
     public final int tileScreenHeight = 30;
@@ -26,12 +20,11 @@ public class Game {
     public int screenWidth = tileScreenWidth * Tile.TILESIZE;
     public int screenHeight = tileScreenHeight * Tile.TILESIZE;
 
-    // Default boundaries (in the future can change with some settings) TODO
     // WINDOWS
     public OptionsWindow optionsWindow;
     public DetailsWindow detailsWindow;
 
-    public Tile[][] map;
+    public Map map;
 
     public List<Man> boys;
 
@@ -40,13 +33,12 @@ public class Game {
     public boolean pauseMode = false;
 
     public Game(int seed, InputHandler inputHandler) {
-        this.seed = seed;
+        map = new Map(seed);
 
-        map = new Tile[mapTileWidth][mapTileHeight];
         boys = new ArrayList<>();
         optionsWindow = new OptionsWindow(new Bound(300, 300, screenWidth - 600, screenHeight - 600), KeyEvent.VK_O, inputHandler);
         detailsWindow = new DetailsWindow(new Bound(100, 500, screenWidth - 200, screenHeight - 600), KeyEvent.VK_E, inputHandler);
 
-        camera = new Bound(0, 0, screenWidth, screenHeight);
+        camera = new Bound(-screenWidth / 2, -screenHeight / 2, screenWidth, screenHeight);
     }
 }

@@ -3,13 +3,13 @@ package ui;
 import helpers.Bound;
 import helpers.Renderer;
 import input.InputHandler;
-import model.base.Entity;
+import model.base.GameObject;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Window extends Entity {
+public class Window extends GameObject {
 
     public int keyCode;
 
@@ -36,8 +36,8 @@ public class Window extends Entity {
     }
 
     @Override
-    public void interact() {
-        super.interact();
+    public void interact(InputHandler.ClickType clickType) {
+        super.interact(clickType);
     }
 
     public void draw(Graphics2D g) {

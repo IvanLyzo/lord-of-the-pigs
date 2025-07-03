@@ -1,7 +1,6 @@
 package main;
 
 import helpers.Bound;
-import helpers.Renderer;
 import helpers.Tile;
 import input.InputHandler;
 import model.Man;
@@ -12,13 +11,10 @@ public class GameController {
 
     public Game game;
 
-    private final GameRenderer gameRenderer;
     private final InputHandler inputHandler;
 
     public GameController(int seed, InputHandler inputHandler) {
         game = new Game(seed, inputHandler);
-
-        gameRenderer = new GameRenderer(game);
 
         this.inputHandler = inputHandler;
         inputHandler.game = game;
@@ -27,21 +23,15 @@ public class GameController {
     }
 
     private void generateWorld() {
-        for (int x = 0; x < game.mapTileWidth; x++) {
-            for (int y = 0; y < game.mapTileHeight; y++) {
-                game.map[x][y] = new Tile(x, y, Tile.Type.GRASS);
-            }
-        }
-
-        game.boys.add(new Man(100, 100, Tile.TILESIZE, Tile.TILESIZE, inputHandler));
-        game.boys.add(new Man(100, 200, Tile.TILESIZE, Tile.TILESIZE, inputHandler));
+        game.boys.add(new Man(new Bound(100, 100, Tile.TILESIZE, Tile.TILESIZE), inputHandler));
+        game.boys.add(new Man(new Bound(100, 200, Tile.TILESIZE, Tile.TILESIZE), inputHandler));
     }
 
     public void update() {
 
         // probably should have a camera class TODO
-        game.camera.xPos += inputHandler.cameraDir.x * 4;
-        game.camera.yPos += inputHandler.cameraDir.y * 4;
+        game.camera.xPos += inputHandler.cameraDir.x * 8;
+        game.camera.yPos += inputHandler.cameraDir.y * 8;
 
         // first check for interactions (replace with event system if exists) TODO
 
@@ -51,18 +41,18 @@ public class GameController {
 
                 game.detailsWindow.activeBoy = boy.activated ? null : boy;
 
-                boy.interact();
+                boy.interact(inputHandler.clickType);
             }
         }
 
         if (game.optionsWindow.bounds.inBounds(inputHandler.clickPoint) == Bound.CollisionCheckResponse.TRUE && game.optionsWindow.active) {
             inputHandler.clickFlag = InputHandler.ClickFlag.UI;
-            game.optionsWindow.interact();
+            game.optionsWindow.interact(inputHandler.clickType);
         }
 
         if (game.detailsWindow.bounds.inBounds(inputHandler.clickPoint) == Bound.CollisionCheckResponse.TRUE && game.detailsWindow.active) {
             inputHandler.clickFlag = InputHandler.ClickFlag.UI;
-            game.detailsWindow.interact();
+            game.detailsWindow.interact(inputHandler.clickType);
         }
 
         // now update behaviour
@@ -76,7 +66,7 @@ public class GameController {
     }
 
     public void draw(Graphics2D g2) {
-        gameRenderer.drawMap(g2);
+        game.map.draw(g2, game);
 
         for (Man boy : game.boys) {
             boy.draw(g2, game);
