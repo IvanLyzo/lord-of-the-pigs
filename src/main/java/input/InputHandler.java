@@ -5,14 +5,17 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class InputHandler implements KeyListener, MouseListener {
 
-    public boolean shiftState = false;
-    public boolean oPressed = false;
+    public List<Integer> keysPressed = new ArrayList<>();
 
     public Point clickPoint;
-    public Point cameraDir = new Point(0, 0);
+    public ClickFlag clickFlag;
+
+    public Point cameraDir;
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -24,12 +27,11 @@ public class InputHandler implements KeyListener, MouseListener {
         int code = e.getKeyCode();
 
         switch (code) {
-            case KeyEvent.VK_SHIFT -> shiftState = true;
-            case KeyEvent.VK_O -> oPressed = true;
             case KeyEvent.VK_W -> cameraDir.y = -1;
             case KeyEvent.VK_A -> cameraDir.x = -1;
             case KeyEvent.VK_S -> cameraDir.y = 1;
             case KeyEvent.VK_D -> cameraDir.x = 1;
+            default -> keysPressed.add(code);
         }
     }
 
@@ -48,6 +50,7 @@ public class InputHandler implements KeyListener, MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         clickPoint = new Point(e.getX(), e.getY());
+        clickFlag = ClickFlag.EMPTY;
     }
 
     @Override
@@ -68,5 +71,12 @@ public class InputHandler implements KeyListener, MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
 
+    }
+
+    public enum ClickFlag {
+        EMPTY,
+        ENTITY,
+        UI,
+        INVALID
     }
 }

@@ -3,7 +3,6 @@ package model.base;
 import helpers.Bound;
 
 import java.awt.*;
-import java.util.Vector;
 
 public class Entity {
 

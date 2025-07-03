@@ -1,5 +1,6 @@
 package main;
 
+import helpers.Bound;
 import helpers.Tile;
 import input.InputHandler;
 import model.Man;
@@ -14,7 +15,7 @@ public class GameController {
     private final InputHandler inputHandler;
 
     public GameController(int seed, InputHandler inputHandler) {
-        game = new Game(seed);
+        game = new Game(seed, inputHandler);
         this.inputHandler = inputHandler;
         gameRenderer = new GameRenderer(game);
 
@@ -34,42 +35,34 @@ public class GameController {
 
     public void update() {
         for (Man boy : game.boys) {
-            boy.update();
+            if (boy.bounds.inBounds(inputHandler.clickPoint) == Bound.CollisionCheckResponse.TRUE) {
+                inputHandler.clickFlag = InputHandler.ClickFlag.ENTITY; // flag check (possibly make more evident)
 
-            if (boy.bounds.inBounds(inputHandler.clickPoint)) {
-                if (game.active == boy) {
-                    game.active = null;
-
+                if (boy.activated) {
                     boy.activated = false;
                     boy.drawColor = Color.WHITE;
+
+                    game.detailsWindow.activeBoy = null;
                 } else {
-                    makeBoyActive(boy);
+                    boy.activated = true;
+                    boy.drawColor = Color.BLUE;
+
+                    game.detailsWindow.activeBoy = boy;
                 }
             }
         }
 
-        if (game.pauseMode) {
-            if (inputHandler.clickPoint != null) {
-                if (!game.escapeWindow.inBounds(inputHandler.clickPoint)) {
-                    game.pauseMode = false;
-                }
-                if (inputHandler.oPressed) {
-                    game.pauseMode = false;
-                }
-            }
-        } else {
-            if (inputHandler.oPressed) {
-                game.pauseMode = true;
-                System.out.println("entered pause mode");
-            }
+        if ((game.optionsWindow.bounds.inBounds(inputHandler.clickPoint) == Bound.CollisionCheckResponse.TRUE && game.optionsWindow.active) ||
+                (game.detailsWindow.bounds.inBounds(inputHandler.clickPoint) == Bound.CollisionCheckResponse.TRUE && game.detailsWindow.active)) {
+            inputHandler.clickFlag = InputHandler.ClickFlag.UI;
         }
-    }
 
-    private void makeBoyActive(Man boy) {
-        game.active = boy;
+        for (Man boy : game.boys) {
+            boy.update();
+        }
 
-        boy.activated = true;
-        boy.drawColor = Color.BLUE;
+        game.optionsWindow.update();
+        game.detailsWindow.update();
     }
 
     public void draw(Graphics2D g2) {
@@ -80,12 +73,12 @@ public class GameController {
         }
 
         // draw UI after everything
-        if (game.active != null) {
-            gameRenderer.drawDetailsWindow(g2, game.active);
+        if (game.optionsWindow.active) {
+            game.optionsWindow.draw(g2);
         }
 
-        if (game.pauseMode) {
-            gameRenderer.drawEscapeWindow(g2);
+        if (game.detailsWindow.active) {
+            game.detailsWindow.draw(g2);
         }
     }
 }

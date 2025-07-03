@@ -81,9 +81,9 @@ public class GamePanel extends JPanel implements Runnable {
 
     private void resetInputStates() {
         inputHandler.clickPoint = null;
+        inputHandler.clickFlag = InputHandler.ClickFlag.INVALID;
 
-        inputHandler.shiftState = false;
-        inputHandler.oPressed = false;
+        inputHandler.keysPressed.clear();
     }
 
     public void paintComponent(Graphics g) {

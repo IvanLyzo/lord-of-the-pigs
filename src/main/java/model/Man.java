@@ -1,5 +1,6 @@
 package model;
 
+import helpers.Bound;
 import input.InputHandler;
 import model.base.Animal;
 
@@ -26,7 +27,6 @@ public class Man extends Animal {
 
     @Override
     public void update() {
-
         super.update();
 
         if (activated) {
@@ -35,7 +35,7 @@ public class Man extends Animal {
     }
 
     public void move() {
-        if (!bounds.inBounds(inputHandler.clickPoint) && inputHandler.clickPoint != null) {
+        if (inputHandler.clickFlag == InputHandler.ClickFlag.EMPTY) {
             tgt = inputHandler.clickPoint;
         }
 

@@ -1,5 +1,7 @@
 package helpers;
 
+import model.base.Entity;
+
 import java.awt.*;
 
 public class Bound {
@@ -16,12 +18,17 @@ public class Bound {
         this.height = height;
     }
 
-    public boolean inBounds(Point point) {
+    public CollisionCheckResponse inBounds(Point point) {
         if (point == null) {
-            return false;
+            return CollisionCheckResponse.NULL;
         }
 
-        return point.x > xPos && point.x < xPos + width
-                && point.y > yPos && point.y < yPos + height;
+        return point.x > xPos && point.x < xPos + width && point.y > yPos && point.y < yPos + height ? CollisionCheckResponse.TRUE : CollisionCheckResponse.FALSE;
+    }
+
+    public enum CollisionCheckResponse {
+        TRUE,
+        FALSE,
+        NULL
     }
 }
