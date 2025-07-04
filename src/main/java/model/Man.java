@@ -1,6 +1,7 @@
 package model;
 
 import helpers.Bound;
+import helpers.Tile;
 import input.InputHandler;
 import model.base.Animal;
 
@@ -17,8 +18,8 @@ public class Man extends Animal {
     public boolean activated;
     public Point tgt;
 
-    public Man(Bound bounds, InputHandler inputHandler) {
-        super(bounds);
+    public Man(Point pos, InputHandler inputHandler) {
+        super(new Bound(pos.x, pos.y, Tile.TILESIZE, Tile.TILESIZE));
 
         this.inputHandler = inputHandler;
 

@@ -17,7 +17,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public GamePanel() {
         inputHandler = new InputHandler();
-        gameController = new GameController(0, inputHandler);
+        gameController = new GameController(500, inputHandler);
 
         this.setPreferredSize(new Dimension(gameController.game.camera.screenWidth, gameController.game.camera.screenHeight));
         this.setBackground(Color.BLACK);
@@ -54,6 +54,9 @@ public class GamePanel extends JPanel implements Runnable {
             lastTime = currentTime;
 
             if (delta >= 0) {
+                // INPUT
+
+
                 // UPDATE
                 update();
 
@@ -74,6 +77,8 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
+        gameController.interact();
+
         gameController.update();
 
         resetInputStates();

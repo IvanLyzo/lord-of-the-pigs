@@ -18,20 +18,9 @@ public class GameController {
 
         this.inputHandler = inputHandler;
         inputHandler.game = game;
-
-        generateWorld();
     }
 
-    private void generateWorld() {
-        game.boys.add(new Man(new Bound(100, 100, Tile.TILESIZE, Tile.TILESIZE), inputHandler));
-        game.boys.add(new Man(new Bound(100, 200, Tile.TILESIZE, Tile.TILESIZE), inputHandler));
-    }
-
-    public void update() {
-        game.camera.move();
-
-        // first check for interactions (replace with event system if exists) TODO
-
+    public void interact() {
         for (Man boy : game.boys) {
             if (boy.bounds.inBounds(inputHandler.clickPoint) == Bound.CollisionCheckResponse.TRUE) {
                 inputHandler.clickFlag = InputHandler.ClickFlag.ENTITY; // flag check (possibly make more evident)
@@ -51,15 +40,17 @@ public class GameController {
             inputHandler.clickFlag = InputHandler.ClickFlag.UI;
             game.detailsWindow.interact(inputHandler.clickType);
         }
+    }
 
-        // now update behaviour
-
+    public void update() {
         for (Man boy : game.boys) {
             boy.update();
         }
 
         game.optionsWindow.update();
         game.detailsWindow.update();
+
+        game.camera.move();
     }
 
     public void draw(Graphics2D g2) {

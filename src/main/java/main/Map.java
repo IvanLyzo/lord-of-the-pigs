@@ -10,9 +10,6 @@ import java.awt.*;
 
 public class Map extends GameObject {
 
-    // WORLD SETTINGS
-    private final int seed;
-
     public final int tileWidth = 100;
     public final int tileHeight = 100;
 
@@ -20,12 +17,11 @@ public class Map extends GameObject {
 
     public Tile[][] tileMap;
 
-    public Map(int seed) {
+    public Map() {
         // messy way of settings bounds for map
         super(new Bound(0, 0, 0, 0));
 
         bounds = new Bound(0, 0, tileWidth * Tile.TILESIZE, tileHeight * Tile.TILESIZE);
-        this.seed = seed;
 
         generateTileMap();
     }
