@@ -19,7 +19,7 @@ public class GamePanel extends JPanel implements Runnable {
         inputHandler = new InputHandler();
         gameController = new GameController(0, inputHandler);
 
-        this.setPreferredSize(new Dimension(gameController.game.screenWidth, gameController.game.screenHeight));
+        this.setPreferredSize(new Dimension(gameController.game.camera.screenWidth, gameController.game.camera.screenHeight));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
 

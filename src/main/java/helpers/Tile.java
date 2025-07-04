@@ -15,9 +15,7 @@ public class Tile {
     }
 
     public enum Type {
-        GRASS,
-        WATER,
-        ROCK,
-        SAND
+        LAND,
+        WATER
     }
 }

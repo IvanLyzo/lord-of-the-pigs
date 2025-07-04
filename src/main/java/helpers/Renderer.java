@@ -9,7 +9,7 @@ public class Renderer {
     public static void drawEntity(Graphics2D g, Game game, Bound worldBound, Color fillColor) {
         g.setColor(fillColor);
 
-        Point screenCords = new Point(worldBound.xPos - game.camera.xPos, worldBound.yPos - game.camera.yPos);
+        Point screenCords = new Point(worldBound.xPos - game.camera.view.xPos, worldBound.yPos - game.camera.view.yPos);
 
         g.fillRect(screenCords.x, screenCords.y, worldBound.width, worldBound.height);
 

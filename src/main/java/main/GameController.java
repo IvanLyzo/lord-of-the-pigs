@@ -28,10 +28,7 @@ public class GameController {
     }
 
     public void update() {
-
-        // probably should have a camera class TODO
-        game.camera.xPos += inputHandler.cameraDir.x * 8;
-        game.camera.yPos += inputHandler.cameraDir.y * 8;
+        game.camera.move();
 
         // first check for interactions (replace with event system if exists) TODO
 

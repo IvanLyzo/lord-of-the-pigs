@@ -1,7 +1,7 @@
 package main;
 
 import helpers.Bound;
-import helpers.Tile;
+import helpers.Camera;
 import input.InputHandler;
 import model.Man;
 import ui.DetailsWindow;
@@ -13,13 +13,6 @@ import java.util.List;
 
 public class Game {
 
-    // SCREEN SETTINGS
-    public final int tileScreenWidth = 40;
-    public final int tileScreenHeight = 30;
-
-    public int screenWidth = tileScreenWidth * Tile.TILESIZE;
-    public int screenHeight = tileScreenHeight * Tile.TILESIZE;
-
     // WINDOWS
     public OptionsWindow optionsWindow;
     public DetailsWindow detailsWindow;
@@ -28,17 +21,16 @@ public class Game {
 
     public List<Man> boys;
 
-    public Bound camera;
+    public Camera camera;
 
     public boolean pauseMode = false;
 
     public Game(int seed, InputHandler inputHandler) {
         map = new Map(seed);
+        camera = new Camera(this, inputHandler);
 
         boys = new ArrayList<>();
-        optionsWindow = new OptionsWindow(new Bound(300, 300, screenWidth - 600, screenHeight - 600), KeyEvent.VK_O, inputHandler);
-        detailsWindow = new DetailsWindow(new Bound(100, 500, screenWidth - 200, screenHeight - 600), KeyEvent.VK_E, inputHandler);
-
-        camera = new Bound(-screenWidth / 2, -screenHeight / 2, screenWidth, screenHeight);
+        optionsWindow = new OptionsWindow(new Bound(300, 300, camera.screenWidth - 600, camera.screenHeight - 600), KeyEvent.VK_O, inputHandler);
+        detailsWindow = new DetailsWindow(new Bound(100, 500, camera.screenWidth - 200, camera.screenHeight - 600), KeyEvent.VK_E, inputHandler);
     }
 }
