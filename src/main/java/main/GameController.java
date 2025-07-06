@@ -1,7 +1,6 @@
 package main;
 
 import helpers.Bound;
-import helpers.Tile;
 import input.InputHandler;
 import model.Man;
 

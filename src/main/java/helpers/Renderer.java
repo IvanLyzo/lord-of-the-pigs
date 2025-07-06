@@ -14,8 +14,8 @@ public class Renderer {
         g.fillRect(screenCords.x, screenCords.y, worldBound.width, worldBound.height);
 
         // draw border (TEMP)
-        g.setColor(Color.RED);
-        g.drawRect(screenCords.x, screenCords.y, worldBound.width, worldBound.height);
+//        g.setColor(Color.RED);
+//        g.drawRect(screenCords.x, screenCords.y, worldBound.width, worldBound.height);
     }
 
     public static void drawWindow(Graphics2D g, Bound bounds) {

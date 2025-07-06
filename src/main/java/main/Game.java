@@ -31,7 +31,7 @@ public class Game {
 
     public Game( int seed, InputHandler inputHandler) {
         this.seed = seed;
-        map = new Map();
+        map = new Map(seed);
         camera = new Camera(this, inputHandler);
 
         optionsWindow = new OptionsWindow(new Bound(300, 300, camera.screenWidth - 600, camera.screenHeight - 600), KeyEvent.VK_O, inputHandler);

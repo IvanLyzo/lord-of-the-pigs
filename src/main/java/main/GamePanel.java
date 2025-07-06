@@ -4,6 +4,7 @@ import input.InputHandler;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Random;
 
 
 public class GamePanel extends JPanel implements Runnable {
@@ -17,7 +18,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public GamePanel() {
         inputHandler = new InputHandler();
-        gameController = new GameController(500, inputHandler);
+        gameController = new GameController(new Random().nextInt(), inputHandler);
 
         this.setPreferredSize(new Dimension(gameController.game.camera.screenWidth, gameController.game.camera.screenHeight));
         this.setBackground(Color.BLACK);

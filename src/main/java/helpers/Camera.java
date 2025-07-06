@@ -6,11 +6,8 @@ import main.Game;
 public class Camera {
 
     // SCREEN SETTINGS
-    public final int tileScreenWidth = 40;
-    public final int tileScreenHeight = 30;
-
-    public int screenWidth = tileScreenWidth * Tile.TILESIZE;
-    public int screenHeight = tileScreenHeight * Tile.TILESIZE;
+    public int screenWidth = 1200;
+    public int screenHeight = 900;
 
     public Bound view;
     public Bound viewLimit;
@@ -21,9 +18,7 @@ public class Camera {
         this.inputHandler = inputHandler;
 
         view = new Bound(-screenWidth / 2, -screenHeight / 2, screenWidth, screenHeight);
-
-        int seaPad = game.map.seaPadding * Tile.TILESIZE;
-        viewLimit = new Bound(game.map.bounds.xPos - seaPad, game.map.bounds.yPos - seaPad, game.map.bounds.width + 2*seaPad, game.map.bounds.height + 2*seaPad);
+        viewLimit = new Bound(game.map.bounds.xPos, game.map.bounds.yPos, game.map.bounds.width, game.map.bounds.height);
     }
 
     public void move() {
