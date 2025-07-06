@@ -1,13 +1,12 @@
 package ui;
 
-import helpers.Bound;
 import input.InputHandler;
 
 import java.awt.*;
 
 public class OptionsWindow extends Window {
 
-    public OptionsWindow(Bound bounds, int keyCode, InputHandler inputHandler) {
+    public OptionsWindow(Rectangle bounds, int keyCode, InputHandler inputHandler) {
         super(bounds, keyCode, inputHandler);
     }
 
@@ -21,7 +20,7 @@ public class OptionsWindow extends Window {
             }
         }
         if (active) {
-            if (bounds.inBounds(inputHandler.clickPoint) == Bound.CollisionCheckResponse.FALSE || inputHandler.keysPressed.contains(keyCode)) {
+            if (!bounds.contains(inputHandler.clickPoint) || inputHandler.keysPressed.contains(keyCode)) {
                 active = false;
             }
 

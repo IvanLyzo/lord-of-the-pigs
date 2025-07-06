@@ -1,6 +1,5 @@
 package ui;
 
-import helpers.Bound;
 import input.InputHandler;
 import model.Man;
 
@@ -11,7 +10,7 @@ public class DetailsWindow extends Window {
     public Man activeBoy;
     public boolean forceOpen = false;
 
-    public DetailsWindow(Bound bounds, int keyCode, InputHandler inputHandler) {
+    public DetailsWindow(Rectangle bounds, int keyCode, InputHandler inputHandler) {
         super(bounds, keyCode, inputHandler);
     }
 

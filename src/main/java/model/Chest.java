@@ -1,6 +1,5 @@
 package model;
 
-import helpers.Bound;
 import input.InputHandler;
 import main.Game;
 import model.base.GameObject;
@@ -9,7 +8,7 @@ import java.awt.*;
 
 public class Chest extends GameObject {
 
-    public Chest(Bound bounds) {
+    public Chest(Rectangle bounds) {
         super(bounds);
 
         drawColor = Color.ORANGE;

@@ -63,7 +63,7 @@ public class InputHandler implements KeyListener, MouseListener {
             System.out.println("Secondary click");
         }
 
-        clickPoint = new Point(e.getX() + game.camera.view.xPos, e.getY() + game.camera.view.yPos);
+        clickPoint = new Point(e.getX() + game.camera.view.x, e.getY() + game.camera.view.y);
         clickFlag = ClickFlag.EMPTY;
     }
 

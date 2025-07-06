@@ -1,6 +1,5 @@
 package ui;
 
-import helpers.Bound;
 import helpers.Renderer;
 import input.InputHandler;
 import model.base.GameObject;
@@ -20,7 +19,7 @@ public class Window extends GameObject {
     public boolean pausesGame = false;
     public boolean active = false;
 
-    public Window(Bound bounds, int keyCode, InputHandler inputHandler) {
+    public Window(Rectangle bounds, int keyCode, InputHandler inputHandler) {
         super(bounds);
 
         this.keyCode = keyCode;

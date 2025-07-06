@@ -3,39 +3,41 @@ package helpers;
 import input.InputHandler;
 import main.Game;
 
+import java.awt.*;
+
 public class Camera {
 
     // SCREEN SETTINGS
     public int screenWidth = 1200;
     public int screenHeight = 900;
 
-    public Bound view;
-    public Bound viewLimit;
+    public Rectangle view;
+    public Rectangle viewLimit;
 
     private final InputHandler inputHandler;
 
     public Camera(Game game, InputHandler inputHandler) {
         this.inputHandler = inputHandler;
 
-        view = new Bound(-screenWidth / 2, -screenHeight / 2, screenWidth, screenHeight);
-        viewLimit = new Bound(game.map.bounds.xPos, game.map.bounds.yPos, game.map.bounds.width, game.map.bounds.height);
+        view = new Rectangle(-screenWidth / 2, -screenHeight / 2, screenWidth, screenHeight);
+        viewLimit = new Rectangle(game.map.bounds.x, game.map.bounds.y, game.map.bounds.width, game.map.bounds.height);
     }
 
     public void move() {
-        view.xPos += inputHandler.cameraDir.x * 8;
-        view.yPos += inputHandler.cameraDir.y * 8;
+        view.x += inputHandler.cameraDir.x * 8;
+        view.y += inputHandler.cameraDir.y * 8;
 
-        if (view.xPos < viewLimit.xPos) {
-            view.xPos = viewLimit.xPos;
+        if (view.x < viewLimit.x) {
+            view.x = viewLimit.x;
         }
-        if (view.yPos < viewLimit.yPos) {
-            view.yPos = viewLimit.yPos;
+        if (view.y < viewLimit.y) {
+            view.y = viewLimit.y;
         }
-        if (view.xPos + view.width > viewLimit.xPos + viewLimit.width) {
-            view.xPos = viewLimit.xPos + viewLimit.width - view.width;
+        if (view.x + view.width > viewLimit.x + viewLimit.width) {
+            view.x = viewLimit.x + viewLimit.width - view.width;
         }
-        if (view.yPos + view.height > viewLimit.yPos + viewLimit.height) {
-            view.yPos = viewLimit.yPos + viewLimit.height - view.height;
+        if (view.y + view.height > viewLimit.y + viewLimit.height) {
+            view.y = viewLimit.y + viewLimit.height - view.height;
         }
 
     }

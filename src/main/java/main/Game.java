@@ -1,6 +1,5 @@
 package main;
 
-import helpers.Bound;
 import helpers.Camera;
 import input.InputHandler;
 import model.Man;
@@ -34,8 +33,8 @@ public class Game {
         map = new Map(seed);
         camera = new Camera(this, inputHandler);
 
-        optionsWindow = new OptionsWindow(new Bound(300, 300, camera.screenWidth - 600, camera.screenHeight - 600), KeyEvent.VK_O, inputHandler);
-        detailsWindow = new DetailsWindow(new Bound(100, 500, camera.screenWidth - 200, camera.screenHeight - 600), KeyEvent.VK_E, inputHandler);
+        optionsWindow = new OptionsWindow(new Rectangle(300, 300, camera.screenWidth - 600, camera.screenHeight - 600), KeyEvent.VK_O, inputHandler);
+        detailsWindow = new DetailsWindow(new Rectangle(100, 500, camera.screenWidth - 200, camera.screenHeight - 600), KeyEvent.VK_E, inputHandler);
 
         Random r = new Random(seed);
 
@@ -46,8 +45,8 @@ public class Game {
 
     private Man generateBoy(InputHandler inputHandler, Random r) {
         Point spawnPoint = new Point(-50, -50);
-        while (map.bounds.inBounds(spawnPoint) == Bound.CollisionCheckResponse.FALSE) {
-            spawnPoint = new Point(map.bounds.xPos + r.nextInt(150), map.bounds.yPos + r.nextInt(150));
+        while (!map.bounds.contains(spawnPoint)) {
+            spawnPoint = new Point(map.bounds.x + r.nextInt(150), map.bounds.y + r.nextInt(150));
         }
 
         return new Man(spawnPoint, inputHandler);

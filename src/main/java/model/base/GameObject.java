@@ -1,6 +1,5 @@
 package model.base;
 
-import helpers.Bound;
 import helpers.Renderer;
 import input.InputHandler;
 import main.Game;
@@ -9,11 +8,11 @@ import java.awt.*;
 
 public class GameObject {
 
-    public Bound bounds;
+    public Rectangle bounds;
 
     public Color drawColor;
 
-    public GameObject(Bound bounds) {
+    public GameObject(Rectangle bounds) {
         this.bounds = bounds;
     }
 

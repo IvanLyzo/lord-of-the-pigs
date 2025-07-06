@@ -1,6 +1,5 @@
 package main;
 
-import helpers.Bound;
 import input.InputHandler;
 import model.Man;
 
@@ -20,8 +19,12 @@ public class GameController {
     }
 
     public void interact() {
+        if (inputHandler.clickPoint == null) {
+            return;
+        }
+
         for (Man boy : game.boys) {
-            if (boy.bounds.inBounds(inputHandler.clickPoint) == Bound.CollisionCheckResponse.TRUE) {
+            if (boy.bounds.contains(inputHandler.clickPoint)) {
                 inputHandler.clickFlag = InputHandler.ClickFlag.ENTITY; // flag check (possibly make more evident)
 
                 game.detailsWindow.activeBoy = boy.activated ? null : boy;
@@ -30,12 +33,12 @@ public class GameController {
             }
         }
 
-        if (game.optionsWindow.bounds.inBounds(inputHandler.clickPoint) == Bound.CollisionCheckResponse.TRUE && game.optionsWindow.active) {
+        if (game.optionsWindow.bounds.contains(inputHandler.clickPoint) && game.optionsWindow.active) {
             inputHandler.clickFlag = InputHandler.ClickFlag.UI;
             game.optionsWindow.interact(inputHandler.clickType);
         }
 
-        if (game.detailsWindow.bounds.inBounds(inputHandler.clickPoint) == Bound.CollisionCheckResponse.TRUE && game.detailsWindow.active) {
+        if (game.detailsWindow.bounds.contains(inputHandler.clickPoint) && game.detailsWindow.active) {
             inputHandler.clickFlag = InputHandler.ClickFlag.UI;
             game.detailsWindow.interact(inputHandler.clickType);
         }

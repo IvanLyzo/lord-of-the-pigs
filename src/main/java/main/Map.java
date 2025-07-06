@@ -1,6 +1,5 @@
 package main;
 
-import helpers.Bound;
 import helpers.NoiseGenerator;
 import helpers.Renderer;
 import helpers.Tile;
@@ -22,8 +21,8 @@ public class Map extends GameObject {
 
     public Map(int seed) {
         // messy way of settings bounds for map
-        super(new Bound(0, 0, 0, 0));
-        bounds = new Bound(0, 0, tileWidth * Tile.TILESIZE, tileHeight * Tile.TILESIZE);
+        super(new Rectangle(0, 0, 0, 0));
+        bounds = new Rectangle(0, 0, tileWidth * Tile.TILESIZE, tileHeight * Tile.TILESIZE);
 
         perlin = new NoiseGenerator(seed);
 
@@ -115,15 +114,15 @@ public class Map extends GameObject {
     @Override
     public void draw(Graphics2D g, Game game) {
         // draw map
-        int firstX = Math.max(game.camera.view.xPos / Tile.TILESIZE - 2, 0);
-        int firstY = Math.max(game.camera.view.yPos / Tile.TILESIZE - 2, 0);
+        int firstX = Math.max(game.camera.view.x / Tile.TILESIZE - 2, 0);
+        int firstY = Math.max(game.camera.view.y / Tile.TILESIZE - 2, 0);
 
         int lastX = Math.min(firstX + (Math.round((float) game.camera.view.width / Tile.TILESIZE + 0.49f)) + 4, tileWidth);
         int lastY = Math.min(firstY + (Math.round((float) game.camera.view.height / Tile.TILESIZE + 0.49f)) + 4, tileHeight);
 
         for (int x = firstX; x < lastX; x++) {
             for (int y = firstY; y < lastY; y++) {
-                Bound tile = new Bound(x * Tile.TILESIZE, y * Tile.TILESIZE, Tile.TILESIZE, Tile.TILESIZE);
+                Rectangle tile = new Rectangle(x * Tile.TILESIZE, y * Tile.TILESIZE, Tile.TILESIZE, Tile.TILESIZE);
                 Renderer.drawEntity(g, game, tile, tileMap[x][y].type.color);
             }
         }

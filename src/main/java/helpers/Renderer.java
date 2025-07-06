@@ -6,10 +6,10 @@ import java.awt.*;
 
 public class Renderer {
 
-    public static void drawEntity(Graphics2D g, Game game, Bound worldBound, Color fillColor) {
+    public static void drawEntity(Graphics2D g, Game game, Rectangle worldBound, Color fillColor) {
         g.setColor(fillColor);
 
-        Point screenCords = new Point(worldBound.xPos - game.camera.view.xPos, worldBound.yPos - game.camera.view.yPos);
+        Point screenCords = new Point(worldBound.x - game.camera.view.x, worldBound.y - game.camera.view.y);
 
         g.fillRect(screenCords.x, screenCords.y, worldBound.width, worldBound.height);
 
@@ -18,9 +18,9 @@ public class Renderer {
 //        g.drawRect(screenCords.x, screenCords.y, worldBound.width, worldBound.height);
     }
 
-    public static void drawWindow(Graphics2D g, Bound bounds) {
+    public static void drawWindow(Graphics2D g, Rectangle bounds) {
         g.setColor(Color.BLACK);
 
-        g.fillRoundRect(bounds.xPos, bounds.yPos, bounds.width, bounds.height, 20, 20);
+        g.fillRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, 20, 20);
     }
 }
