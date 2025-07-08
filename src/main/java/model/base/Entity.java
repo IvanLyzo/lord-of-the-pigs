@@ -1,16 +1,17 @@
 package model.base;
 
 import input.InputHandler;
+import main.Game;
 
 import java.awt.*;
 
-public class Animal extends GameObject {
+public class Entity extends GameObject {
 
     public int health;
     public int speed; // TODO: figure out how to init these
 
-    public Animal(Rectangle bounds) {
-        super(bounds);
+    public Entity(Rectangle bounds, String spriteLoc) {
+        super(bounds, spriteLoc);
     }
 
     @Override
@@ -24,11 +25,8 @@ public class Animal extends GameObject {
     }
 
     public void move(Point target) {
-        int centerX = bounds.x + bounds.width / 2;
-        int centerY = bounds.y + bounds.height / 2;
-
-        int xOffset = target.x - centerX;
-        int yOffset = target.y - centerY;
+        int xOffset = target.x - centerX();
+        int yOffset = target.y - centerY();
 
         if (xOffset > 0) {
             bounds.x += Math.min(speed, xOffset);
@@ -42,5 +40,14 @@ public class Animal extends GameObject {
         if (yOffset < 0) {
             bounds.y -= Math.min(speed, Math.abs(yOffset));
         }
+    }
+
+    public boolean atTarget(Point tgt) {
+        return centerX() == tgt.x && centerY() == tgt.y;
+    }
+
+    @Override
+    public void draw(Graphics2D g, Game game) {
+        super.draw(g, game);
     }
 }

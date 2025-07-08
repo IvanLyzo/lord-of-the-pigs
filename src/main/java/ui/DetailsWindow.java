@@ -1,13 +1,13 @@
 package ui;
 
 import input.InputHandler;
-import model.Man;
+import model.Boy;
 
 import java.awt.*;
 
 public class DetailsWindow extends Window {
 
-    public Man activeBoy;
+    public Boy activeBoy;
     public boolean forceOpen = false;
 
     public DetailsWindow(Rectangle bounds, int keyCode, InputHandler inputHandler) {

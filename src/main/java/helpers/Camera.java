@@ -20,7 +20,15 @@ public class Camera {
         this.inputHandler = inputHandler;
 
         view = new Rectangle(-screenWidth / 2, -screenHeight / 2, screenWidth, screenHeight);
-        viewLimit = new Rectangle(game.map.bounds.x, game.map.bounds.y, game.map.bounds.width, game.map.bounds.height);
+        viewLimit = new Rectangle(0, 0, game.map.tileMapSize * Tile.TILESIZE, game.map.tileMapSize * Tile.TILESIZE);
+    }
+
+    public Point getWorldCords(Point p) {
+        return new Point(p.x + view.x, p.y + view.y);
+    }
+
+    public Point getScreenCords(Point p) {
+        return new Point(p.x - view.x, p.y - view.y);
     }
 
     public void move() {

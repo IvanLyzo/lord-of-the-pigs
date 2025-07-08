@@ -4,16 +4,16 @@ import helpers.NoiseGenerator;
 import helpers.Renderer;
 import helpers.Tile;
 import input.InputHandler;
-import model.base.GameObject;
 
 import java.awt.*;
-import java.util.Random;
 
-public class Map extends GameObject {
+public class Map {
 
     // NEW MAP GEN FIELDS (part of future mapGen class) TODO
-    public final int tileWidth = 50;
-    public final int tileHeight = 50;
+    public final int tileMapSize = 64;
+
+    public final int width = tileMapSize * Tile.TILESIZE;
+    public final int height = tileMapSize * Tile.TILESIZE;
 
     public Tile[][] tileMap;
 
@@ -21,35 +21,34 @@ public class Map extends GameObject {
 
     public Map(int seed) {
         // messy way of settings bounds for map
-        super(new Rectangle(0, 0, 0, 0));
-        bounds = new Rectangle(0, 0, tileWidth * Tile.TILESIZE, tileHeight * Tile.TILESIZE);
+//        bounds = new Rectangle(0, 0, tileWidth * Tile.TILESIZE, tileHeight * Tile.TILESIZE);
 
         perlin = new NoiseGenerator(seed);
 
         generateTileMap();
     }
 
-    public void generateTileMap() {
-        tileMap = new Tile[tileWidth][tileHeight];
+    private void generateTileMap() {
+        tileMap = new Tile[tileMapSize][tileMapSize];
 
-        for (int x = 0; x < tileWidth; x++) {
-            for (int y = 0; y < tileHeight; y++) {
+        for (int x = 0; x < tileMapSize; x++) {
+            for (int y = 0; y < tileMapSize; y++) {
                 tileMap[x][y] = new Tile(x, y, 0, Tile.Type.WATER);
             }
         }
 
-        int sandRadius = new Random().nextInt(2) + 1;
+        int sandRadius = 3;
 
-        for (int y = 0; y < tileWidth; y++) {
-            for (int x = 0; x < tileHeight; x++) {
+        for (int y = 0; y < tileMapSize; y++) {
+            for (int x = 0; x < tileMapSize; x++) {
 
                 // Centered coordinates from -1 to 1
-                double nx = (2.0 * x / tileWidth) - 1.0;
-                double ny = (2.0 * y / tileHeight) - 1.0;
+                double nx = (2.0 * x / tileMapSize) - 1.0;
+                double ny = (2.0 * y / tileMapSize) - 1.0;
 
                 // Distance from center
                 double distance = Math.sqrt(nx * nx + ny * ny); // [0, ~1.414]
-                double falloff = Math.pow(distance, 5); // exponent to sharpen edges
+                double falloff = Math.pow(distance, 3); // exponent to sharpen edges
 
                 // Get Perlin noise
                 double noiseValue = perlin.noise(x, y, 0); // range ~[-1,1]
@@ -71,58 +70,58 @@ public class Map extends GameObject {
                 }
 
                 if (x > sandRadius * 2 && y > sandRadius * 2) {
-                    check(x, y, sandRadius);
+                    sandCheck(x, y, sandRadius);
                 }
             }
         }
     }
 
-    private void check(int x, int y, int sandRadius) {
-        // check for isolated land tiles
-        if (!tileMap[x - 2][y].type.land && !tileMap[x][y].type.land && !tileMap[x][y - 2].type.land) {
-            tileMap[x - 1][y - 1].type = Tile.Type.WATER;
-        }
+    private void sandCheck(int x, int y, int sandRadius) {
+        int r = sandRadius;
 
-        // check for water tiles amongst land tiles
-        if (tileMap[x - 2][y].type.land && tileMap[x][y].type.land) {
-            tileMap[x - 1][y].type = Tile.Type.LAND;
-        }
-        if (tileMap[x][y - 2].type.land && tileMap[x][y].type.land) {
-            tileMap[x][y - 1].type = Tile.Type.LAND;
-        }
-
-        // check for sand
         // TODO make smarter to handle corners with radius of 2
-        if ((!tileMap[x - sandRadius * 2][y - sandRadius].type.land || !tileMap[x][y - sandRadius].type.land
-                || !tileMap[x - sandRadius][y - sandRadius * 2].type.land || !tileMap[x - sandRadius][y].type.land) && tileMap[x - sandRadius][y - sandRadius].type.land) {
-            tileMap[x - sandRadius][y - sandRadius].type = Tile.Type.SAND;
-        } else if (sandRadius > 1) {
-            check(x, y, sandRadius - 1);
+        while (r > 1) {
+            if ((!tileMap[x - r * 2][y - r].type.land || !tileMap[x][y - r].type.land
+                    || !tileMap[x - r][y - r * 2].type.land || !tileMap[x - r][y].type.land) && tileMap[x - r][y - r].type.land) {
+                tileMap[x - r][y - r].type = Tile.Type.SAND;
+            }
+
+            r--;
         }
     }
 
-    @Override
     public void update() {
-        super.update();
+
     }
 
-    @Override
+    public Tile getTile(Point p) {
+        int xTile = p.x / Tile.TILESIZE;
+        int yTile = p.y / Tile.TILESIZE;
+
+        return tileMap[xTile][yTile];
+    }
+
     public void interact(InputHandler.ClickType clickType) {
-        super.interact(clickType);
+
     }
 
-    @Override
     public void draw(Graphics2D g, Game game) {
         // draw map
         int firstX = Math.max(game.camera.view.x / Tile.TILESIZE - 2, 0);
         int firstY = Math.max(game.camera.view.y / Tile.TILESIZE - 2, 0);
 
-        int lastX = Math.min(firstX + (Math.round((float) game.camera.view.width / Tile.TILESIZE + 0.49f)) + 4, tileWidth);
-        int lastY = Math.min(firstY + (Math.round((float) game.camera.view.height / Tile.TILESIZE + 0.49f)) + 4, tileHeight);
+        int lastX = Math.min(firstX + (Math.round((float) game.camera.view.width / Tile.TILESIZE + 0.49f)) + 4, tileMapSize);
+        int lastY = Math.min(firstY + (Math.round((float) game.camera.view.height / Tile.TILESIZE + 0.49f)) + 4, tileMapSize);
 
         for (int x = firstX; x < lastX; x++) {
             for (int y = firstY; y < lastY; y++) {
                 Rectangle tile = new Rectangle(x * Tile.TILESIZE, y * Tile.TILESIZE, Tile.TILESIZE, Tile.TILESIZE);
+
+                if (tileMap[x][y].type.sprite != null) {
+                    Renderer.drawEntity(g, game, tile, tileMap[x][y].type.sprite);
+                    continue;
+                }
+
                 Renderer.drawEntity(g, game, tile, tileMap[x][y].type.color);
             }
         }

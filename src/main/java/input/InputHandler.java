@@ -1,6 +1,7 @@
 package input;
 
 import main.Game;
+import model.base.GameObject;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -17,6 +18,7 @@ public class InputHandler implements KeyListener, MouseListener {
     public List<Integer> keysPressed = new ArrayList<>();
 
     public Point clickPoint;
+    public GameObject clickObj;
     public ClickType clickType;
     public ClickFlag clickFlag;
 
@@ -63,7 +65,7 @@ public class InputHandler implements KeyListener, MouseListener {
             System.out.println("Secondary click");
         }
 
-        clickPoint = new Point(e.getX() + game.camera.view.x, e.getY() + game.camera.view.y);
+        clickPoint = game.camera.getWorldCords(new Point(e.getX(), e.getY()));
         clickFlag = ClickFlag.EMPTY;
     }
 
@@ -89,6 +91,8 @@ public class InputHandler implements KeyListener, MouseListener {
 
     public enum ClickFlag {
         EMPTY,
+        ENVIRONMENT,
+        ITEM,
         ENTITY,
         UI,
         INVALID
