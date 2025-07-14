@@ -10,8 +10,8 @@ public class Entity extends GameObject {
     public int health;
     public int speed; // TODO: figure out how to init these
 
-    public Entity(Rectangle bounds, String spriteLoc) {
-        super(bounds, spriteLoc);
+    public Entity(Game game, Rectangle bounds, String spriteLoc) {
+        super(game, bounds, spriteLoc);
     }
 
     @Override
@@ -48,6 +48,10 @@ public class Entity extends GameObject {
 
     @Override
     public void draw(Graphics2D g, Game game) {
+        if (!game.camera.view.contains(new Point(centerX(), centerY()))) {
+            return;
+        }
+
         super.draw(g, game);
     }
 }

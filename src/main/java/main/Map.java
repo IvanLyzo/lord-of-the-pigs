@@ -1,8 +1,7 @@
 package main;
 
 import helpers.NoiseGenerator;
-import helpers.Renderer;
-import helpers.Tile;
+import model.base.Tile;
 import input.InputHandler;
 
 import java.awt.*;
@@ -115,9 +114,12 @@ public class Map {
 
         for (int x = firstX; x < lastX; x++) {
             for (int y = firstY; y < lastY; y++) {
-                Rectangle tile = new Rectangle(x * Tile.TILESIZE, y * Tile.TILESIZE, Tile.TILESIZE, Tile.TILESIZE);
 
-                Renderer.drawEntity(g, game, tile, tileMap[x][y].type.sprite);
+                Tile tile = tileMap[x][y];
+                Rectangle bounds = new Rectangle(x * Tile.TILESIZE, y * Tile.TILESIZE, Tile.TILESIZE, Tile.TILESIZE);
+
+                Point screenCords = game.camera.getScreenCords(new Point(bounds.x, bounds.y));
+                g.drawImage(tile.type.sprite, screenCords.x, screenCords.y, bounds.width, bounds.height, null);
             }
         }
     }

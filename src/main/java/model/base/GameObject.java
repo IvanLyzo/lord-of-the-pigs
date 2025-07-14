@@ -1,44 +1,36 @@
 package model.base;
 
-import helpers.Camera;
-import helpers.Renderer;
+import helpers.ResHandler;
 import input.InputHandler;
 import main.Game;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 public class GameObject {
 
+    public final Game game;
+
     public Rectangle bounds;
+    public BufferedImage sprite;
 
     public int centerX() {
         return bounds.x + bounds.width / 2;
     }
+
     public int centerY() {
         return bounds.y + bounds.height / 2;
     }
 
-    // old code for generating with fillRect()
-    public Color drawColor;
-
-    // new code for sprite rendering
-    public BufferedImage sprite;
-
-    public GameObject(Rectangle bounds) {
+    public GameObject(Game game, Rectangle bounds) {
+        this.game = game;
         this.bounds = bounds;
     }
 
-    public GameObject(Rectangle bounds, String spriteLoc) {
-        this(bounds);
+    public GameObject(Game game, Rectangle bounds, String spriteLoc) {
+        this(game, bounds);
 
-        try {
-            sprite = ImageIO.read(getClass().getResourceAsStream(spriteLoc));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        sprite = ResHandler.getSprite(spriteLoc);
     }
 
     public void update() {
@@ -50,11 +42,7 @@ public class GameObject {
     }
 
     public void draw(Graphics2D g, Game game) {
-        if (sprite != null) {
-            Renderer.drawEntity(g, game, bounds, sprite);
-            return;
-        }
-
-        Renderer.drawEntity(g, game, bounds, drawColor);
+        Point screenCords = game.camera.getScreenCords(new Point(bounds.x, bounds.y));
+        g.drawImage(sprite, screenCords.x, screenCords.y, bounds.width, bounds.height, null);
     }
 }

@@ -61,16 +61,16 @@ public class GameController {
         }
 
         // ui interactions
-        if (game.optionsWindow.bounds.contains(inputHandler.clickPoint) && game.optionsWindow.active) {
+        Point screenClick = game.camera.getScreenCords(inputHandler.clickPoint);
+
+        if (game.optionsWindow.getAbsBounds().contains(screenClick) && game.optionsWindow.active) {
             inputHandler.clickFlag = InputHandler.ClickFlag.UI;
-            inputHandler.clickObj = game.optionsWindow;
 
             game.optionsWindow.interact(inputHandler.clickType);
         }
 
-        if (game.detailsWindow.bounds.contains(inputHandler.clickPoint) && game.detailsWindow.active) {
+        if (game.detailsWindow.getAbsBounds().contains(screenClick) && game.detailsWindow.active) {
             inputHandler.clickFlag = InputHandler.ClickFlag.UI;
-            inputHandler.clickObj = game.detailsWindow;
 
             game.detailsWindow.interact(inputHandler.clickType);
         }

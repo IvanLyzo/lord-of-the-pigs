@@ -8,10 +8,8 @@ import java.awt.*;
 
 public class Chest extends GameObject {
 
-    public Chest(Rectangle bounds) {
-        super(bounds);
-
-        drawColor = Color.ORANGE;
+    public Chest(Game game, Rectangle bounds) {
+        super(game, bounds);
     }
 
     @Override

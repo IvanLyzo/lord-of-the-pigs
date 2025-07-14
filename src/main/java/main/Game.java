@@ -1,6 +1,6 @@
 package main;
 
-import helpers.Camera;
+import model.base.Tile;
 import input.InputHandler;
 import model.Conch;
 import model.Boy;
@@ -11,7 +11,6 @@ import ui.DetailsWindow;
 import ui.OptionsWindow;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -24,62 +23,90 @@ public class Game {
     public OptionsWindow optionsWindow;
     public DetailsWindow detailsWindow;
 
+    // important singleton objects
     public Map map;
+    public Camera camera;
 
+    // all game objects
     public List<GameObject> environment;
     public List<Item> items;
     public List<Entity> entities;
 
-    public Camera camera;
+    public Point worldSpawn;
 
-    public boolean pauseMode = false;
+    private final Random r;
 
     // make order of game generation more obvious and actually think it through this time TODO
-    public Game( int seed, InputHandler inputHandler) {
+    public Game(int seed, InputHandler inputHandler) {
         this.seed = seed;
+
         map = new Map(seed);
         camera = new Camera(this, inputHandler);
 
-        optionsWindow = new OptionsWindow(new Rectangle(300, 300, camera.screenWidth - 600, camera.screenHeight - 600), KeyEvent.VK_O, inputHandler);
-        detailsWindow = new DetailsWindow(new Rectangle(100, 500, camera.screenWidth - 200, camera.screenHeight - 600), KeyEvent.VK_E, inputHandler);
-
-        Random r = new Random(seed);
+        r = new Random(seed);
 
         environment = new ArrayList<>();
-        generateEnvironment(seed);
-
-        items = new ArrayList<>();
-        generateItems(seed);
-
-        Point spawnPoint = new Point(r.nextInt(1000) + 750, r.nextInt(1000) + 750);
+        genEnvironment();
 
         entities = new ArrayList<>();
-        entities.add(generateBoy(inputHandler, r, spawnPoint));
-        entities.add(generateBoy(inputHandler, r, spawnPoint));
+        genEntities(inputHandler);
+
+        items = new ArrayList<>();
+        genItems();
+
+        genUI(inputHandler);
     }
 
-    private void generateEnvironment(int seed) {
+    private void genEnvironment() {
 //        Tree tree = new Tree(new Point(map.width / 2, map.height / 2));
 //        environment.add(tree);
     }
 
-    private void generateItems(int seed) {
-        Conch conch = new Conch(new Point(map.width / 2, map.height / 2));
+    private void genEntities(InputHandler inputHandler) {
+        worldSpawn = new Point(r.nextInt(map.width), r.nextInt(map.height));
+        while (map.getTile(worldSpawn).type != Tile.Type.SAND) {
+            worldSpawn.x = r.nextInt(map.width);
+            worldSpawn.y = r.nextInt(map.height);
+        }
+
+        entities.add(genBoy(inputHandler, r));
+        entities.add(genBoy(inputHandler, r));
+
+        camera.teleport(worldSpawn);
+    }
+
+    // TODO: random sand tiles not necessarily beach and can be anywhere; fix this
+    private Boy genBoy(InputHandler inputHandler, Random r) {
+        Point spawn = new Point(worldSpawn.x + r.nextInt(41) - 20, worldSpawn.y + r.nextInt(41) - 20);
+
+        while (map.getTile(spawn).type != Tile.Type.SAND) {
+            int x = r.nextInt(41) - 20;
+            int y = r.nextInt(41) - 20;
+
+            spawn = new Point(worldSpawn.x + x, worldSpawn.y + y);
+        }
+
+        return new Boy(this, spawn, inputHandler);
+    }
+
+    private void genItems() {
+        Point spawn = new Point(worldSpawn.x + r.nextInt(41) - 20, worldSpawn.y + r.nextInt(41) - 20);
+
+        while (map.getTile(spawn).type != Tile.Type.SAND) {
+            int x = r.nextInt(101) - 50;
+            int y = r.nextInt(101) - 50;
+
+            spawn = new Point(worldSpawn.x + x, worldSpawn.y + y);
+        }
+
+        Conch conch = new Conch(this, spawn);
         items.add(conch);
     }
 
-    private Boy generateBoy(InputHandler inputHandler, Random r, Point coreSpawn) {
-        Point offset = new Point(r.nextInt(41) - 20, r.nextInt(41) - 20);
+    private void genUI(InputHandler inputHandler) {
+        Rectangle screen = new Rectangle(0, 0, camera.screenWidth, camera.screenHeight);
 
-        Point spawn = new Point(coreSpawn.x + offset.y, coreSpawn.y + offset.y);
-//        while (map.getTile(spawn).type != Tile.Type.LAND) {
-//            offset.x = r.nextInt(41) - 20;
-//            offset.y = r.nextInt(41) - 20;
-//
-//            spawn.x = coreSpawn.x + offset.x;
-//            spawn.y = coreSpawn.y + offset.y;
-//        }
-
-        return new Boy(spawn, inputHandler);
+        optionsWindow = new OptionsWindow(this, inputHandler);
+        detailsWindow = new DetailsWindow(this, inputHandler);
     }
 }

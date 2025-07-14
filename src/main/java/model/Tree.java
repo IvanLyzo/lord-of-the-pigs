@@ -1,6 +1,6 @@
 package model;
 
-import helpers.Tile;
+import model.base.Tile;
 import input.InputHandler;
 import main.Game;
 import model.base.GameObject;
@@ -9,8 +9,8 @@ import java.awt.*;
 
 public class Tree extends GameObject {
 
-    public Tree(Point p) {
-        super(new Rectangle(p.x, p.y, Tile.scaledTileSize, Tile.scaledTileSize), "/tree/tree.png");
+    public Tree(Game game, Point p) {
+        super(game, new Rectangle(p.x, p.y, Tile.scaledTileSize, Tile.scaledTileSize), "/textures/environment/tree.png");
     }
 
     @Override

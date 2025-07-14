@@ -10,12 +10,12 @@ public class Item extends GameObject {
     // stackable and other such values
     public boolean dropped = true;
 
-    public Item(Rectangle bounds) {
-        super(bounds);
+    public Item(Game game, Rectangle bounds) {
+        super(game, bounds);
     }
 
-    public Item(Rectangle bounds, String spriteLoc) {
-        super(bounds, spriteLoc);
+    public Item(Game game, Rectangle bounds, String spriteLoc) {
+        super(game, bounds, spriteLoc);
     }
 
     @Override

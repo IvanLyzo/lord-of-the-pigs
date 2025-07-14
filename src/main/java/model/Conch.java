@@ -1,6 +1,6 @@
 package model;
 
-import helpers.Tile;
+import model.base.Tile;
 import input.InputHandler;
 import main.Game;
 import model.base.Entity;
@@ -10,8 +10,8 @@ import java.awt.*;
 
 public class Conch extends Item {
 
-    public Conch(Point p) {
-        super(new Rectangle(p.x, p.y, Tile.itemSize, Tile.itemSize), "/tree/conch.png");
+    public Conch(Game game, Point p) {
+        super(game, new Rectangle(p.x, p.y, Tile.itemSize, Tile.itemSize), "/textures/items/conch.png");
     }
 
     @Override

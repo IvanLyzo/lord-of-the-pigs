@@ -58,11 +58,9 @@ public class InputHandler implements KeyListener, MouseListener {
     public void mouseClicked(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
             clickType = ClickType.LEFT_CLICK;
-            System.out.println("Primary Click");
         }
         if (e.getButton() == MouseEvent.BUTTON3) {
             clickType = ClickType.RIGHT_CLICK;
-            System.out.println("Secondary click");
         }
 
         clickPoint = game.camera.getWorldCords(new Point(e.getX(), e.getY()));
